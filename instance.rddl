@@ -1,0 +1,23 @@
+instance grid_world_instance of grid_world {
+
+    non-fluents nf_grid_world {
+        domain = grid_world;
+        objects {
+            position : {pos1, pos2, pos3, pos4};
+        };
+        non-fluents {
+            reward(pos1) = true;
+            reward(pos2) = false;
+            reward(pos3) = true;
+            reward(pos4) = false;
+        };
+    };
+
+    init-state {
+        agent_at = pos1;
+    };
+
+    max-nondef-actions = 1; // Max number of non-default actions per step
+    horizon = 5; // Length of the decision problem
+    discount = 1.0; // Discount factor for future rewards
+}
