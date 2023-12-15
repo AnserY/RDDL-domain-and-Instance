@@ -1,0 +1,29 @@
+domain grid_world {
+
+    types {
+        position; // Defines a type for grid positions
+    };
+
+    pvariables {
+        agent_at : { position } state-fluent enum { pos1, pos2, pos3, pos4 }; // Agent's position
+        reward : { position } state-fluent bool; // Indicates if a reward is present at a position
+        move : { position } action-fluent enum { up, down, left, right, stay }; // Available actions
+    };
+
+    cpfs {
+        agent_at' = case {
+            move = up & agent_at != pos4 : pos3;
+            move = down & agent_at != pos1 : pos2;
+            move = left & agent_at != pos1 : pos1;
+            move = right & agent_at != pos4 : pos4;
+            true : agent_at;
+        }; // Dynamics of agent's movement
+
+        reward' = case {
+            agent_at = pos3 & reward(pos3) : false;
+            true : reward;
+        }; // Dynamics of reward collection
+    };
+
+    reward = I(reward(agent_at)); // Immediate reward based on agent's position
+}
